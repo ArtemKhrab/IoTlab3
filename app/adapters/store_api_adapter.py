@@ -3,7 +3,6 @@ import logging
 from typing import List
 from datetime import datetime
 
-import pydantic_core
 import requests
 
 from app.entities.processed_agent_data import ProcessedAgentData
@@ -30,6 +29,8 @@ class StoreApiAdapter(StoreGateway):
         Returns:
             bool: True if the data is successfully saved, False otherwise.
         """
+        if not processed_agent_data_batch:
+            return True
 
         payload = json.dumps([batch.dict() for batch in processed_agent_data_batch], default=self._datetime_encoder)
         logger.info(payload)
